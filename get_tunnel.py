@@ -26,8 +26,8 @@ except FileNotFoundError:
 if readme_old != readme_new:
     with open(git_readme, 'w') as fp:
         fp.write(readme_new)
-        now = datetime.now().strftime('%Y%m%d%H%M')
-        os.system('git add README.md')
-        os.system('git commit -m "README.md at {0:s}"'.format(now))
-        os.system('git push')
+    now = datetime.now().strftime('%Y%m%d%H%M')
+    os.system('git add README.md')
+    os.system('git commit -m "README.md at {0:s}"'.format(now))
+    os.system('git push')
         
