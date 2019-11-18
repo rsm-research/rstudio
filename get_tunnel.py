@@ -4,7 +4,7 @@ import requests
 import os
 from datetime import datetime
 
-git_readme = 'README.md'
+git_readme = '/home/jeroene/rstudio/README.md'
 readme_template = '[![RStudio](RStudio-Ball.png)](LINK_GOES_HERE)'
 
 try:
