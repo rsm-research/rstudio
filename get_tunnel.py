@@ -14,7 +14,6 @@ for ngrok_api_port in range(4040,4050):
         raw_html = requests.get('http://localhost:{0:d}/api/tunnels'.format(ngrok_api_port))
         tunnel = json.loads(raw_html.content.decode())
         my_port = tunnel['tunnels'][0]['config']['addr'].split(':')[-1]
-        print(my_port)
         if my_port == str(rstudio_port):
             my_url = tunnel['tunnels'][0]['public_url'].replace('http://','https://')
             readme_new = readme_template.replace('LINK_GOES_HERE', my_url)
@@ -25,7 +24,6 @@ else:
     readme_new = readme_template.replace('LINK_GOES_HERE', 'https://rstudio.com')
 
 readme_new = readme_new + '\n'
-print(readme_new)
 
 try:
     with open(git_readme, 'r') as fp:
