@@ -4,19 +4,28 @@ import requests
 import os
 from datetime import datetime
 
-os.chdir('/home/jeroene/rstudio')
+os.chdir('/media/Data3/rstudio/tunnel/rstudio')
 git_readme = 'README.md'
 readme_template = '[![RStudio](RStudio-Ball.png)](LINK_GOES_HERE)'
+rstudio_port = 8787
 
-try:
-    raw_html = requests.get('http://localhost:4040/api/tunnels')
-    tunnel = json.loads(raw_html.content.decode())
-    my_url = tunnel['tunnels'][0]['public_url'].replace('http://','https://')
-    readme_new = readme_template.replace('LINK_GOES_HERE', my_url)
-except:
+for ngrok_api_port in range(4040,4050):
+    try:
+        raw_html = requests.get('http://localhost:{0:d}/api/tunnels'.format(ngrok_api_port))
+        tunnel = json.loads(raw_html.content.decode())
+        my_port = tunnel['tunnels'][0]['config']['addr'].split(':')[-1]
+        print(my_port)
+        if my_port == str(rstudio_port):
+            my_url = tunnel['tunnels'][0]['public_url'].replace('http://','https://')
+            readme_new = readme_template.replace('LINK_GOES_HERE', my_url)
+            break
+    except:
+        readme_new = readme_template.replace('LINK_GOES_HERE', 'https://rstudio.com')
+else:
     readme_new = readme_template.replace('LINK_GOES_HERE', 'https://rstudio.com')
 
 readme_new = readme_new + '\n'
+print(readme_new)
 
 try:
     with open(git_readme, 'r') as fp:
